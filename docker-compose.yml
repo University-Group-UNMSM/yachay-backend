@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  database:
+    image: mysql
+    container_name: yachay-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yachay-local
+      MYSQL_USER: yachay-admin
+      MYSQL_PASSWORD: yachay-password
+    ports:
+      - 3307:3306
+    volumes:
+      - ./.database:/docker-entrypoint-initdb.d
+      - ./.database/data:/var/lib/mysql
