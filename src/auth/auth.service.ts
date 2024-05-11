@@ -42,4 +42,12 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     }
   }
+
+  async getProfile(request: {sub:number, email:string, iat:number}) {
+    const user = await this.usersService.findOne(request.email);
+
+    const { id, password, ...result } = user;
+
+    return result;
+  }
 }
