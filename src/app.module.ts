@@ -20,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
         synchronize: true,
       }),
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env.local', '.env.testing', '.env'] }),
   ],
 })
 export class AppModule {}
