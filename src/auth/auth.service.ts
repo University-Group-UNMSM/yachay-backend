@@ -1,15 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { hash } from 'bcrypt';
-import { jwtConstants } from './constants';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async signUp(type: 'student' | 'teacher', name: string, lastName: string, email: string, pass: string) {
-    const hashedPassword = await hash(pass, jwtConstants.saltOrRounds);
-    const user = await this.usersService.create(type, name, lastName, email, hashedPassword);
+  async signUp(props: User) {
+    const hashedPassword = await hash(props.password, +process.env.JWT_SALTS_NUM);
+    const user = await this.usersService.create({ ...props, password: hashedPassword });
 
     const { password, ...result } = user;
 

@@ -14,13 +14,17 @@ export class UsersService {
     return this.usersRepository.findOneBy({ email: email });
   }
 
-  create(type: 'student' | 'teacher', name: string, lastName: string, email: string, password: string): Promise<User> {
+  create(payload: User): Promise<User> {
     const user = new User();
-    user.name = name;
-    user.lastName = lastName;
-    user.password = password;
-    user.type = type;
-    user.email = email;
+    user.name = payload.name;
+    user.lastName = payload.lastName;
+    user.password = payload.password;
+    user.type = payload.type;
+    user.email = payload.email;
+    user.phone = payload.phone;
+    user.secondEmail = payload.secondEmail;
+    user.profilePicture = payload.profilePicture;
+    user.college = payload.college;
 
     return this.usersRepository.save(user);
   }
