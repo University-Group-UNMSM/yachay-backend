@@ -3,6 +3,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthGuard } from './auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,5 +24,11 @@ import { ConfigModule } from '@nestjs/config';
     }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env.local', '.env.testing', '.env'] }),
   ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    }
+  ]
 })
 export class AppModule {}
