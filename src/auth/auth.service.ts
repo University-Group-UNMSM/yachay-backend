@@ -3,6 +3,7 @@ import { UsersService } from 'src/users/users.service';
 import { compare, hash } from 'bcrypt';
 import { User } from 'src/users/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { TokenPayload } from 'src/shared/types';
 
 @Injectable()
 export class AuthService {
@@ -33,9 +34,10 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = {
+    const payload: Omit<TokenPayload, 'iat'> = {
       sub: user.id,
       email: user.email,
+      type: user.type,
     };
 
     return {
@@ -43,7 +45,7 @@ export class AuthService {
     };
   }
 
-  async getProfile(request: { sub: number; email: string; iat: number }) {
+  async getProfile(request: TokenPayload) {
     const user = await this.usersService.findOne(request.email);
 
     delete user.password;

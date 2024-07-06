@@ -2,15 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './course.entity';
 import { Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { NewCourseEvent } from './events/new.course.event';
 
 @Injectable()
 export class CoursesService {
   constructor(
     @InjectRepository(Course)
     private coursesRepository: Repository<Course>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
-  create(payload: Course): Promise<Course> {
+  async create(payload: Course): Promise<Course> {
     const course = new Course();
     course.idTeacher = payload.idTeacher;
     course.name = payload.name;
@@ -27,7 +30,17 @@ export class CoursesService {
     course.targetPublic = payload.targetPublic;
     course.description = payload.description;
 
-    return this.coursesRepository.save(course);
+    const newCourse = this.coursesRepository.create(course);
+
+    this.eventEmitter.emit(
+      'course.created',
+      new NewCourseEvent({
+        idTeacher: newCourse.idTeacher,
+        name: newCourse.name,
+      }),
+    );
+
+    return newCourse;
   }
 
   findAll(): Promise<Course[]> {
