@@ -5,11 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { CoursesModule } from './courses/courses.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     UsersModule,
     AuthModule,
+    CoursesModule,
+    NotificationsModule,
+    EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'mysql',
@@ -27,8 +33,8 @@ import { APP_GUARD } from '@nestjs/core';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthGuard
-    }
-  ]
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

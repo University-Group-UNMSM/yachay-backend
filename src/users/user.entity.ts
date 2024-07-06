@@ -3,7 +3,9 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export type UserType = 'student' | 'teacher';
 
-@Entity()
+@Entity({
+  name: 'usuarios',
+})
 export class User {
   @PrimaryGeneratedColumn()
   id: number;

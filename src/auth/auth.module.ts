@@ -14,8 +14,8 @@ dotenv.config();
     ConfigModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET
-    })
+      secret: process.env.JWT_SECRET,
+    }),
   ],
   providers: [AuthService],
   controllers: [AuthController],

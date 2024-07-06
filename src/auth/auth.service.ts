@@ -3,24 +3,25 @@ import { UsersService } from 'src/users/users.service';
 import { compare, hash } from 'bcrypt';
 import { User } from 'src/users/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { TokenPayload } from 'src/shared/types';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(props: User) {
     const hashedPassword = await hash(props.password, +process.env.JWT_SALTS_NUM);
     const user = await this.usersService.create({ ...props, password: hashedPassword });
 
-    const { password, ...result } = user;
+    delete user.password;
 
-    return result;
+    return user;
   }
 
-  async signIn(email: string, pass: string): Promise<{ access_token: string} > {
+  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.usersService.findOne(email);
 
     if (!user) {
@@ -33,21 +34,23 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = {
+    const payload: Omit<TokenPayload, 'iat'> = {
       sub: user.id,
-      email: user.email
-    }
+      email: user.email,
+      type: user.type,
+    };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-    }
+    };
   }
 
-  async getProfile(request: {sub:number, email:string, iat:number}) {
+  async getProfile(request: TokenPayload) {
     const user = await this.usersService.findOne(request.email);
 
-    const { id, password, ...result } = user;
+    delete user.password;
+    delete user.id;
 
-    return result;
+    return user;
   }
 }
