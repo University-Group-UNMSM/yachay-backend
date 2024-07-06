@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -27,5 +27,15 @@ export class UsersService {
     user.college = payload.college;
 
     return this.usersRepository.save(user);
+  }
+
+  findAll(options?: FindManyOptions): Promise<User[]> {
+    return this.usersRepository.find(options);
+  }
+
+  findById(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { id },
+    });
   }
 }

@@ -19,30 +19,48 @@ export class Course {
   @Column('varchar', { nullable: false })
   category: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   resume: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   language: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   filesCount: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   rating: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   price: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   discount: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   benefits: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   targetPublic: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   description: string;
 }

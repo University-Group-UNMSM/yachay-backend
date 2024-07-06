@@ -1,4 +1,4 @@
-export class NewCourseEvent {
+export class CourseUpdatedEvent {
   idTeacher: number;
   name: string;
   idCourse: number;

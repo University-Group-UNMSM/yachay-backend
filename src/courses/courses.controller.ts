@@ -19,14 +19,12 @@ export class CoursesController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  @OnlyTeachers()
   findAll() {
     return this.coursesService.findAll();
   }
 
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  @OnlyTeachers()
   findById(@Param('id') id: number) {
     return this.coursesService.findById(id);
   }

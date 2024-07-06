@@ -20,7 +20,6 @@ export class OnlyTeachersGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user as TokenPayload;
 
-    console.log(user);
     return user.type === 'teacher';
   }
 }
