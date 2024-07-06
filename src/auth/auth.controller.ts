@@ -17,7 +17,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @Public()
-  signIn(@Body() sigInDto: { email: string, pass: string }) {
+  signIn(@Body() sigInDto: { email: string; pass: string }) {
     return this.authService.signIn(sigInDto.email, sigInDto.pass);
   }
 

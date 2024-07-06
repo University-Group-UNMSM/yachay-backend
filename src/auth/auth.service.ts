@@ -8,19 +8,19 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(props: User) {
     const hashedPassword = await hash(props.password, +process.env.JWT_SALTS_NUM);
     const user = await this.usersService.create({ ...props, password: hashedPassword });
 
-    const { password, ...result } = user;
+    delete user.password;
 
-    return result;
+    return user;
   }
 
-  async signIn(email: string, pass: string): Promise<{ access_token: string} > {
+  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.usersService.findOne(email);
 
     if (!user) {
@@ -35,19 +35,20 @@ export class AuthService {
 
     const payload = {
       sub: user.id,
-      email: user.email
-    }
+      email: user.email,
+    };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-    }
+    };
   }
 
-  async getProfile(request: {sub:number, email:string, iat:number}) {
+  async getProfile(request: { sub: number; email: string; iat: number }) {
     const user = await this.usersService.findOne(request.email);
 
-    const { id, password, ...result } = user;
+    delete user.password;
+    delete user.id;
 
-    return result;
+    return user;
   }
 }
