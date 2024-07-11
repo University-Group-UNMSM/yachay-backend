@@ -32,14 +32,14 @@ export class User {
   @Column('varchar', { length: 64 })
   password: string;
 
-  @Column('varchar', { length: 10 })
+  @Column('varchar', { length: 10, nullable: true })
   phone: string;
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, nullable: true })
   @IsEmail()
   secondEmail: string;
 
-  @Column('varchar')
+  @Column({ nullable: true })
   college: string;
 
   @Column('varchar', {
