@@ -38,4 +38,8 @@ export class UsersService {
       where: { id },
     });
   }
+
+  update(id: number, payload: Partial<User>): Promise<User | null> {
+    return this.usersRepository.save({ id, ...payload });
+  }
 }
