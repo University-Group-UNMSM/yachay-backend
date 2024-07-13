@@ -53,8 +53,20 @@ export class CoursesService {
     };
   }
 
-  findAll(): Promise<Course[]> {
-    return this.coursesRepository.find();
+  async findAll(): Promise<any[]> {
+    const courses = await this.coursesRepository.find();
+    const coursesWithTeacherInformation = [];
+
+    for (const course of courses) {
+      const teacher = await this.usersService.findById(course.idTeacher);
+
+      coursesWithTeacherInformation.push({
+        ...course,
+        teacher,
+      });
+    }
+
+    return coursesWithTeacherInformation;
   }
 
   findById(id: number): Promise<Course | null> {
