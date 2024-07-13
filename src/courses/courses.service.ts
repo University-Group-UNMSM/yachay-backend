@@ -6,16 +6,18 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NewCourseEvent } from './events/new.course.event';
 import { CourseUpdatedEvent } from './events/course.updated.event';
 import { EVENTS } from 'src/shared/enums/events';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CoursesService {
   constructor(
     @InjectRepository(Course)
     private coursesRepository: Repository<Course>,
+    private usersService: UsersService,
     private eventEmitter: EventEmitter2,
   ) {}
 
-  async create(payload: Course): Promise<Course> {
+  async create(payload: Course): Promise<any> {
     const course = new Course();
     course.idTeacher = payload.idTeacher;
     course.name = payload.name;
@@ -43,7 +45,12 @@ export class CoursesService {
       }),
     );
 
-    return newCourse;
+    const teacher = await this.usersService.findById(newCourse.idTeacher);
+
+    return {
+      ...newCourse,
+      teacher,
+    };
   }
 
   findAll(): Promise<Course[]> {
