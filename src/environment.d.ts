@@ -9,6 +9,9 @@ declare namespace NodeJS {
       DB_NAME: string;
       JWT_SECRET: string;
       JWT_SALTS_NUM: number;
+      AWS_REGION: string;
+      AWS_ACCESS_KEY_ID: string;
+      AWS_SECRET_ACCESS_KEY: string;
     };
   }
 }

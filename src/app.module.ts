@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CoursesModule } from './courses/courses.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { TranscriptionModule } from './transcription/transcription.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuthModule,
     CoursesModule,
     NotificationsModule,
+    TranscriptionModule,
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
